@@ -27,11 +27,11 @@ class ConverterPLugin extends GenericPlugin{
 
 
 	function getDisplayName(){	
-		return __('plugins.generic.converter.displayName');
+		return Locale::translate('plugins.generic.converter.displayName');
 	}
 
 	function getDescription(){
-		return __('plugins.generic.converter.description');
+		return Locale::translate('plugins.generic.converter.description');
 	}
 
 	function setEnabled($enabled) {
@@ -54,7 +54,7 @@ class ConverterPLugin extends GenericPlugin{
 	function getManagementVerbs() {
 		$verbs = array();
 		if ($this->getEnabled()) {
-			$verbs[] = array('settings', __('plugins.generic.converter.settings'));
+			$verbs[] = array('settings', Locale::translate('plugins.generic.converter.settings'));
 		}
 		return parent::getManagementVerbs($verbs);
 	}
@@ -148,13 +148,13 @@ class ConverterPLugin extends GenericPlugin{
 
 		$session =& 		 Request::getSession();
 		$fileManager = 		 new FileManager();
-	    $templateMgr =		 &TemplateManager::getManager();
-        $journal =& 		 Request::getJournal();
-        $pageVars = 		 $smarty->_tpl_vars;
-        $userName = 		 'convertidor';
-		$userPassword = 	 'usuario2016_#';
+	   	$templateMgr =		 &TemplateManager::getManager();
+		$journal =& 		 Request::getJournal();
+		$pageVars = 		 $smarty->_tpl_vars;
+		$userName = 		'convertidor';
+		$userPassword = 	'usuario2016_#';
 
-        /////Verificar su existe usuario convertidor y si no ... lo crea
+        	/////Verificar su existe usuario convertidor y si no ... lo crea
         $roleDao =& DAORegistry::getDAO('RoleDAO');			 
 		$userDao =& DAORegistry::getDAO('UserDAO');
 
@@ -195,15 +195,11 @@ class ConverterPLugin extends GenericPlugin{
 				 $ch=curl_init();
                 curl_setopt($ch, CURLOPT_URL, "http://converter.escire.mx/");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                //curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 400); //timeout in seconds
                 set_time_limit(0);
 
                 $tmp=curl_exec($ch);
                 curl_close($ch);
-
-                
-                $this->debug_to_console($tmp);
 
 
 
@@ -239,7 +235,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($initialCopyeditFile){
 			$temp = strtolower($initialCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-				$archivos[$initialCopyeditFile->_data["revision"].','.$initialCopyeditFile->_data["fileId"]] = __('plugins.generic.converter.fileversion.initialCopyeditFile').' | '. $initialCopyeditFile->_data["fileName"];
+				$archivos[$initialCopyeditFile->_data["revision"].','.$initialCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.initialCopyeditFile').' | '. $initialCopyeditFile->_data["fileName"];
 
 			if( !empty($initialCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $initialCopyeditFile->_data["submissionId"];
@@ -249,7 +245,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($submissionFile){
 			$temp = strtolower($submissionFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$submissionFile->_data["revision"].','.$submissionFile->_data["fileId"]] = __('plugins.generic.converter.fileversion.submissionFile').' | '.$submissionFile->_data["fileName"];
+			$archivos[$submissionFile->_data["revision"].','.$submissionFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.submissionFile').' | '.$submissionFile->_data["fileName"];
 
 			if( !empty($submissionFile->_data["submissionId"]) )
 				$submissionId = 	 $submissionFile->_data["submissionId"];
@@ -259,7 +255,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($copyeditFile){
 			$temp = strtolower($copyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$copyeditFile->_data["revision"].','.$copyeditFile->_data["fileId"]] = __('plugins.generic.converter.fileversion.copyeditFile').' | '.$copyeditFile->_data["fileName"];
+			$archivos[$copyeditFile->_data["revision"].','.$copyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.copyeditFile').' | '.$copyeditFile->_data["fileName"];
 
 			if( !empty($copyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $copyeditFile->_data["submissionId"];
@@ -269,7 +265,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($editorAuthorCopyeditFile){
 			$temp = strtolower($editorAuthorCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$editorAuthorCopyeditFile->_data["revision"].','.$editorAuthorCopyeditFile->_data["fileId"]] = __('plugins.generic.converter.fileversion.editorAuthorCopyeditFile').' | '.$editorAuthorCopyeditFile->_data["fileName"];
+			$archivos[$editorAuthorCopyeditFile->_data["revision"].','.$editorAuthorCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.editorAuthorCopyeditFile').' | '.$editorAuthorCopyeditFile->_data["fileName"];
 
 			if( !empty($editorAuthorCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $editorAuthorCopyeditFile->_data["submissionId"];
@@ -280,7 +276,7 @@ class ConverterPLugin extends GenericPlugin{
         if($finalCopyeditFile){
         	$temp = strtolower($finalCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$finalCopyeditFile->_data["revision"].','.$finalCopyeditFile->_data["fileId"]] = __('plugins.generic.converter.fileversion.finalCopyeditFile').' | '.$finalCopyeditFile->_data["fileName"];
+			$archivos[$finalCopyeditFile->_data["revision"].','.$finalCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.finalCopyeditFile').' | '.$finalCopyeditFile->_data["fileName"];
 
 			if( !empty($finalCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $finalCopyeditFile->_data["submissionId"];
@@ -335,8 +331,8 @@ class ConverterPLugin extends GenericPlugin{
 		    	$idFile 	 = explode(",", $clave );
 		    	$idFiles 	.= ",".$idFile[1];
 
-				$fileNametmp2 	= explode("|", $valor );
-				$fileNametmp 	= trim($fileNametmp2[1]);
+			$fileNametmp2 	= explode("|", $valor );
+			$fileNametmp 	= trim($fileNametmp2[1]);
 
 				$nomZip = str_replace("-","",$fileNametmp);
 		    	$nomZip = str_replace(".docx","",$nomZip);
@@ -348,17 +344,33 @@ class ConverterPLugin extends GenericPlugin{
 		    	$tempVar = explode(",", $clave );
         		$nomCarp 	= $tempVar[1];
 
-        		$rutaBuscarHTML = $completePath."archivos/".$nomCarp."/html/".$nomZip;
-        		$rutaBuscarXML = $completePath."archivos/".$nomCarp."/xml/".$nomZip;
+        		$rutaBuscarHTML 	= $completePath."archivos/".$nomCarp."/html/".$nomZip;
+        		$rutaBuscarXML 	= $completePath."archivos/".$nomCarp."/xml/".$nomZip;
+				$rutaBuscarPDF 	= $completePath."archivos/".$nomCarp."/pdf/".$nomZip;
+				$rutaBuscarEPUB 	= $completePath."archivos/".$nomCarp."/epub/".$nomZip;
 
         		if( file_exists($rutaBuscarHTML) ){
         			$templateMgr->assign('zipFileHTML', $baseUrl .'/plugins/generic/converter/archivos/'.$nomCarp."/html/".$nomZip);
         			$templateMgr->assign('archivoToolTipHTML', $valor);
+					$session->setSessionVar('zipFileHTML', $completePath .'archivos/'.$nomCarp."/html/".$nomZip);
         		}
 
         		if( file_exists($rutaBuscarXML) ){
         			$templateMgr->assign('zipFileXML', $baseUrl .'/plugins/generic/converter/archivos/'.$nomCarp."/xml/".$nomZip);
         			$templateMgr->assign('archivoToolTipXML', $valor);
+					$session->setSessionVar('zipFileXML', $completePath .'archivos/'.$nomCarp."/xml/".$nomZip);
+        		}
+
+			if( file_exists($rutaBuscarPDF) ){
+        			$templateMgr->assign('zipFilePDF', $baseUrl .'/plugins/generic/converter/archivos/'.$nomCarp."/pdf/".$nomZip);
+        			$templateMgr->assign('archivoToolTipPDF', $valor);
+					$session->setSessionVar('zipFilePDF', $completePath .'archivos/'.$nomCarp."/pdf/".$nomZip);
+        		}
+
+			if( file_exists($rutaBuscarEPUB) ){
+        			$templateMgr->assign('zipFileEPUB', $baseUrl .'/plugins/generic/converter/archivos/'.$nomCarp."/epub/".$nomZip);
+        			$templateMgr->assign('archivoToolTipEPUB', $valor);
+					$session->setSessionVar('zipFileEPUB', $completePath .'archivos/'.$nomCarp."/epub/".$nomZip);
         		}
         		
         		

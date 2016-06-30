@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 <!--
-  * Copyright (c) 2003-2015 University of São Paulo
-  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  * Localization strings.
   -->
+ 
 <locale name="pt_BR" full_name="Português (Brasil)">
-	<message key="plugins.generic.converter.requiredSettings">Por favor, preecha os dados de configuração do plugin</message>
+  
+	<message key="plugins.generic.converter.requiredSettings">Por favor, preecha os dados de configuração do plugin</message>	
 	<message key="plugins.generic.converter.title">convert2xml</message>
 	<message key="plugins.generic.converter.displayName">convert2xml Plugin</message>
 	<message key="plugins.generic.converter.description">Converte um arquivo para o formato HTML, XML ou PDF</message>
@@ -16,10 +17,17 @@
 	<message key="plugins.generic.converter.register2">e obtenha conversões ilimitadas por 30 dias</message>
 	<message key="plugins.generic.converter.convert">Converter para HTML</message>
 	<message key="plugins.generic.converter.convertXML">Converter para XML</message>
+	<message key="plugins.generic.converter.convertPDF">Convertir para PDF</message>
+  	<message key="plugins.generic.converter.convertEPUB">Convertir para ePub</message>
 	<message key="plugins.generic.converter.select.file">Selecione o arquivo para conversão:</message>
+	<message key="plugins.generic.converter.sendMail.email">Digite conta de e-mail:</message>
+  	<message key="plugins.generic.converter.sendMail">Enviar por email...</message>	
 	<message key="plugins.generic.converter.converting">Convertendo o documento</message>
 	<message key="plugins.generic.converter.downloadzip">Baixar ZIP HTML</message>
 	<message key="plugins.generic.converter.downloadzipxml">Baixar ZIP XML</message>
+	<message key="plugins.generic.converter.downloadzippdf">Baixar ZIP PDF</message>
+  	<message key="plugins.generic.converter.downloadzipepub">Baixar ZIP ePub</message>	
+	<message key="plugins.generic.converter.sendzip">Enviar ZIP</message>	
 	<message key="plugins.generic.converter.settings">Configuração</message>
 	<message key="plugins.generic.converter.settings.userClientToolTip">Usuario fornecido por eScire</message>
 	<message key="plugins.generic.converter.settings.userPassToolTip">Sua senha foi enviada em seu cadastro</message>
@@ -35,7 +43,7 @@
 	<message key="plugins.generic.converter.settings.userNameRequired">Nome do usuário requerido</message>
 	<message key="plugins.generic.converter.settings.userPasswordRequired">Senha requerida</message>
 	<message key="plugins.generic.converter.settings.description">Converte documentos em formato word para arquivo html</message>
-	<message key="plugins.generic.converter.statusMessage">Por favor, espere o término do processo</message>
+  	<message key="plugins.generic.converter.statusMessage">Por favor, espere o término do processo</message>
 	<message key="plugins.generic.converter.error.permission">Por favor, verifique permissões de escrita da pasta deste plugin</message>
 	<message key="plugins.generic.converter.error.conection">Serviço indisponível, tente novamente mais tarde</message>
 	<message key="plugins.generic.converter.gateway.errorZip">Por favor instale ou habilite a extenção do PHP ZIP</message>
@@ -46,9 +54,13 @@
 	<message key="plugins.generic.converter.gateway.successImport">Importado com sucesso</message>
 	<message key="plugins.generic.converter.gateway.convertedFileError">Erro ao recuperar o arquivo do servidor de conversão. Por favor entre em contato com o provedor do serviço.</message>
 	<message key="plugins.generic.converter.gateway.importingDocument">Importando documento</message>
-	<message key="plugins.generic.converter.fileversion.finalCopyeditFile">Edição (Correção final)</message>
+  	<message key="plugins.generic.converter.fileversion.finalCopyeditFile">Edição (Correção final)</message>
 	<message key="plugins.generic.converter.fileversion.editorAuthorCopyeditFile">Edição (Correção do autor/a)</message>
 	<message key="plugins.generic.converter.fileversion.copyeditFile">Edição (Correção inicial)</message>
 	<message key="plugins.generic.converter.fileversion.submissionFile">Resumo (Arquivo original)</message>
 	<message key="plugins.generic.converter.fileversion.initialCopyeditFile">Edição (Arquivo Final)</message>
+  	<message key="plugins.generic.converter.fileversion.download.success.zip">Baixar ZIP</message>
+  	<message key="plugins.generic.converter.fileversion.download.success.tip"><p>Você também pode baixar todos os arquivos ZIP</p></message>
+  	<message key="plugins.generic.converter.fileversion.download.success.view">Preview 1</message>
+
 </locale>

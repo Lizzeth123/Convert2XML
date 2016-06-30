@@ -131,6 +131,10 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 				$this->processConvert();
 				break;
 			
+			case 'sendMail':
+				$this->sendMail();
+				break;
+			
 			case 'status':
 				$this->getStatus();
 			break;
@@ -157,6 +161,46 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 	    flush();
 	}
 
+	function sendMail(){
+		$sendType = $_POST['sendType'];
+		$toEmail = $_POST['toEmail'];
+			
+		$session =& 				Request::getSession();
+	    	$templateMgr = 				&TemplateManager::getManager();
+		$currentJournal 		=& 	$templateMgr->get_template_vars('currentJournal');
+		$baseUrl 				=&	$templateMgr->get_template_vars('baseUrl');
+		$folder 				= 	$baseUrl . '/plugins/generic/converter/archivos/';
+		
+		import('classes.mail.MailTemplate');
+		$email = new MailTemplate();
+		$email->setSubject( $sendType." ZIP" );
+		$email->setReplyTo(null);
+		$email->addRecipient( $toEmail , $currentJournal->getSetting('contactName'));
+		
+		$fileSend = "html";
+		if(strcmp($sendType,'html')==0){
+			$fileSend = $session->getSessionVar('zipFileHTML');
+		}else if(strcmp($sendType,'xml')==0){
+			$fileSend = $session->getSessionVar('zipFileXML');
+		}else if(strcmp($sendType,'pdf')==0){
+			$fileSend = $session->getSessionVar('zipFilePDF');
+		}else if(strcmp($sendType,'epub')==0){
+			$fileSend = $session->getSessionVar('zipFileEPUB');
+		}
+				
+		$email->addAttachment( $fileSend,	basename($fileSend),	'application/zip');
+		
+		$random_hash = md5(date('r', time())); 
+		$email->addHeader("MIME-Version","1.0\r\n");
+		$email->addHeader("Content-Type","multipart/mixed; boundary=\"".$random_hash."\"\r\n\r\n");
+		$email->addHeader("Content-Transfer-Encoding","base64\r\n");
+		$email->addHeader("Content-Disposition","attachment");
+		$email->addHeader("filename",basename($fileSend)."\r\n\r\n");
+
+		$email->send();
+		unset($mail);
+	}
+	
 	
 	function processConvert(){
 		
@@ -168,54 +212,58 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 		$convertionType = $_POST['convertionType'];
 		$fileSelectedA 	= explode(",", $fileSelected );
-        $revision1 		= $fileSelectedA[0];
-        $fileId1 		= $fileSelectedA[1];
+        	$revision1 		= $fileSelectedA[0];
+        	$fileId1 		= $fileSelectedA[1];
         
         	
 
-        //subcarpeta para almacenar cada tipo de archivo
-        $rutaSubcarpeta = '';
-        if (strcmp($convertionType, 'xml') == 0) {
-        	$rutaSubcarpeta = 'xml/';
-        }else if (strcmp($convertionType, 'html') == 0) {
-        	$rutaSubcarpeta = 'html/';
-        }
+        	//subcarpeta para almacenar cada tipo de archivo
+		$rutaSubcarpeta = '';
+		if (strcmp($convertionType, 'xml') == 0) {
+			$rutaSubcarpeta = 'xml/';
+		}else if (strcmp($convertionType, 'html') == 0) {
+			$rutaSubcarpeta = 'html/';
+		}else if (strcmp($convertionType, 'pdf') == 0) {
+			$rutaSubcarpeta = 'pdf/';
+		}else if (strcmp($convertionType, 'html') == 0) {
+			$rutaSubcarpeta = 'epub/';
+		}
 
 		$this->closeOutput();
 
 		import('classes.file.ArticleFileManager');
 		import('lib.pkp.classes.file.FileManager');
 
-        $session =& 				Request::getSession();
-	    $templateMgr = 				&TemplateManager::getManager();
-	    $this->submissionId = 		$session->getSessionVar('converter_submissionId');
+        	$session =& 				Request::getSession();
+	    	$templateMgr = 				&TemplateManager::getManager();
+	    	$this->submissionId = 		$session->getSessionVar('converter_submissionId');
 		$articleFileManager = new 	ArticleFileManager($this->submissionId);
 		$fileManager = new 			FileManager();
 
 		$session->setSessionVar('converter_convertionType', $convertionType);
 		$currentJournal 		=& 	$templateMgr->get_template_vars('currentJournal');
 		$baseUrl 				=&	$templateMgr->get_template_vars('baseUrl');
-        $this->client 			= 	$session->getSessionVar('converter_client');
-        $this->userPass 		= 	$session->getSessionVar('converter_pass');
-        $this->wsURL 			= 	$session->getSessionVar('converter_wsURL');
-        $this->urlWorkPlugin 	= 	$baseUrl . '/plugins/generic/converter/archivos/';
-        $this->loginParams 		= 	$session->getSessionVar('converter_loginParams');
-        $this->completePath 	= 	$session->getSessionVar('converter_completePath');
-        $idFiles				= $session->getSessionVar('idFiles');
+		$this->client 			= 	$session->getSessionVar('converter_client');
+		$this->userPass 		= 	$session->getSessionVar('converter_pass');
+		$this->wsURL 			= 	$session->getSessionVar('converter_wsURL');
+		$this->urlWorkPlugin 	= 	$baseUrl . '/plugins/generic/converter/archivos/';
+		$this->loginParams 		= 	$session->getSessionVar('converter_loginParams');
+		$this->completePath 	= 	$session->getSessionVar('converter_completePath');
+		$idFiles				= $session->getSessionVar('idFiles');
 
 
-        $this->pathFileCon 		=$this->completePath."archivos/".$fileId1."/"; 
-        $pathFileConCarpeta 	=$this->pathFileCon;
-        $this->pathFileCon 		=$this->pathFileCon.$convertionType."/";
-        
-        $this->fileId 		= $fileId1;
-        $this->revision 	= $revision1;
-        $this->fileName 	= $fileName2;
+		$this->pathFileCon 		=$this->completePath."archivos/".$fileId1."/"; 
+		$pathFileConCarpeta 	=$this->pathFileCon;
+		$this->pathFileCon 		=$this->pathFileCon.$convertionType."/";
+		
+		$this->fileId 		= $fileId1;
+		$this->revision 	= $revision1;
+		$this->fileName 	= $fileName2;
 
-        $this->loginUrl =		$baseUrl . '/index.php/index/login/signIn';
-        $this->userAgent =		$session->getSessionVar('converter_userAgent');
-        $this->locale =			$session->getSessionVar('converter_locale');
-        $journalPath = 		 	$currentJournal->getUrl();//domain.com/index.php/journal
+		$this->loginUrl =		$baseUrl . '/index.php/index/login/signIn';
+		$this->userAgent =		$session->getSessionVar('converter_userAgent');
+		$this->locale =			$session->getSessionVar('converter_locale');
+		$journalPath = 		 	$currentJournal->getUrl();//domain.com/index.php/journal
 		$this->uploadUrl = 		$journalPath .'/editor/uploadLayoutFile';
 
 		//Validar server is running
@@ -264,7 +312,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		}
 		
 		$mensaje = "mensaje->".$mensaje;
-        $jsonStatus = array(
+        	$jsonStatus = array(
 			"actual" => 1,
 			"total" => 20,
 			"message" => $mensaje
@@ -318,7 +366,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 			'layoutFileType' => 'galley',
 			'layoutFile' =>	'@'.$convertedFileName);
 
-		if($json->convertionType == "html" or $json->convertionType == "xml" ){
+		if($json->convertionType == "html" or $json->convertionType == "xml" or $json->convertionType == "pdf" or $json->convertionType == "epub" ){
 			$jsonStatus = array(
 				"actual" => 1,
 				"total" => 40,
@@ -343,58 +391,59 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_POST, true);
-     	curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
+     		curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->loginParams);
 		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 		curl_exec($ch);
 
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_VERBOSE,true);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postGalley);
-        curl_setopt($ch, CURLOPT_URL,$this->uploadUrl);
-        curl_exec($ch);
-        $chInfo = curl_getinfo($ch);
-        curl_close($ch);
-        $galleyUrl = $chInfo["url"];
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_VERBOSE,true);
+		curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postGalley);
+		curl_setopt($ch, CURLOPT_URL,$this->uploadUrl);
+		curl_exec($ch);
+		$chInfo = curl_getinfo($ch);
+		curl_close($ch);
+		$galleyUrl = $chInfo["url"];
 
-        print_r($chInfo);
-        return $galleyUrl;
+		print_r($chInfo);
+		return $galleyUrl;
 	}
 
 	function insertGalleyImage($imageFolder, $imageGalleyUrl, $json, $proofGalleyUrl, $convertionType="html"){
 		$session =& Request::getSession();
 		$convertionType = $session->getSessionVar('converter_convertionType');
-        $images = glob($imageFolder."{*.jpg,*.gif,*.png}", GLOB_BRACE);
+        	$images = glob($imageFolder."{*.emz,*.jpeg,*.jpg,*.gif,*.png}", GLOB_BRACE);
 		$totalImages = count($images);
 		$jsonFile = $session->getSessionVar('converter_rutaJson');
 		$cnt = 0;
-        foreach($images as $image){
 
-            $imagePost = array('label' => strtoupper($convertionType),
-            			  'galleyLocale'=> $this->locale,
-            			  'imageFile' => '@'.$image,
-            			  'uploadImage' => 'Subir'
-            );
+		foreach($images as $image){
+
+		    $imagePost = array('label' => strtoupper($convertionType),
+		    			  'galleyLocale'=> $this->locale,
+		    			  'imageFile' => '@'.$image,
+		    			  'uploadImage' => 'Subir'
+		    );
 			
 			$cookie = "";
-            $ch = curl_init();
+		    	$ch = curl_init();
 			curl_setopt($ch, CURLOPT_POST, true);
-	     	curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
+		     	curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->loginParams);
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-            curl_exec($ch);
+		    	curl_exec($ch);
 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $imagePost);
-            curl_setopt($ch, CURLOPT_URL, $imageGalleyUrl);
-            curl_exec($ch);
-            curl_close($ch);
+		    	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
+		    	curl_setopt($ch, CURLOPT_POSTFIELDS, $imagePost);
+		    	curl_setopt($ch, CURLOPT_URL, $imageGalleyUrl);
+		    	curl_exec($ch);
+		    	curl_close($ch);
 
 			++$cnt;
 			$jsonStatus = array(
@@ -451,6 +500,13 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 		$publisher =		$currentJournal2->getSetting('publisherInstitution');
 		
+		$articleDao = 		new	ArticleDAO();
+		$article =& $articleDao->getArticle($this->submissionId);
+				
+		$issueDao =& DAORegistry::getDAO('IssueDAO');
+		$issue =& 			$issueDao->getIssueByArticleId($this->submissionId, $currentJournal2->getJournalId()); 
+		
+		
 		$abbreviation2 = '';
 		foreach($abbreviation as $uno=>$dos)
 		{
@@ -460,15 +516,30 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$issue2 = 			$templateMgr2->get_template_vars('issue');
 
 		
-        $session =& Request::getSession();
-        $actualError = $session->getSessionVar('actualError');
-
-        
-		$json = @file_get_contents($this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName . "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato
-			."&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn)
-			."&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo)
-			);
+        	$session =& Request::getSession();
+        	$actualError = $session->getSessionVar('actualError');
 		
+        
+		$urls= $this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName . "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato
+			."&date=".urlencode($article->getDateSubmitted())
+			."&volume=".urlencode($issue->getVolume())
+			."&year=".urlencode($issue->getYear())
+			."&issue=".urlencode($issue->getNumber())
+			."&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn)
+			."&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
+
+		$this->debug_to_console($urls);
+
+		$ch=curl_init();
+		curl_setopt($ch, CURLOPT_URL, $urls);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0); 
+		curl_setopt($ch, CURLOPT_TIMEOUT, 400); //timeout in seconds
+		set_time_limit(0);
+
+		$json=curl_exec($ch);
+		curl_close($ch);		
+
 		if(empty($json)){
 			$actualError = '{"status": "error", "actual": "0", "total": "100", "message": "' . __("plugins.generic.converter.gateway.convertedFileError") . '"}';
 			$session->setSessionVar('actualError', $actualError);
@@ -510,7 +581,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$jsonFile = $session->getSessionVar('converter_rutaJson');
 
 		if(!empty($actualError)){
-			$files = glob($pathFileCon.$convertionType."/"."{*.jpg,*.gif,*.png,*.txt,*.html,*.docx,*.doc,*.xml}", GLOB_BRACE);
+			$files = glob($pathFileCon.$convertionType."/"."{*.emz,*.jpg,*.gif,*.png,*.txt,*.html,*.docx,*.doc,*.xml}", GLOB_BRACE);
 			foreach($files as $file){
 				unlink($file);
 			}
@@ -529,7 +600,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$json = json_decode($fileContent);
 
 		if($json->total == 100){
-			$files = glob($pathFileCon.$convertionType."/"."{*.jpg,*.gif,*.png,*.txt,*.html,*.docx,*.doc,*.xml}", GLOB_BRACE);
+			$files = glob($pathFileCon.$convertionType."/"."{*.emz,*.jpg,*.gif,*.png,*.txt,*.html,*.docx,*.doc,*.xml}", GLOB_BRACE); 
 			foreach($files as $file){
 				unlink($file);
 			}

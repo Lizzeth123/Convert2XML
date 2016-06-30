@@ -21,13 +21,20 @@
   <message key="plugins.generic.converter.guia2">To convert to XML owes its OJS must have captured: Title, Initials and Abbreviation of the journal</message>
   <message key="plugins.generic.converter.leyenda">XML converter prepared by eScire with reviews SciELO Mexico</message>
   <message key="plugins.generic.converter.convert">Convert to HTML</message>
+  <message key="plugins.generic.converter.convertPDF">Convert to PDF</message>
+  <message key="plugins.generic.converter.convertEPUB">Convert to ePub</message>
   <message key="plugins.generic.converter.register">Sign Up</message>
   <message key="plugins.generic.converter.register2">for unlimited conversions for 30 days</message>
   <message key="plugins.generic.converter.convertXML">Convert to XML</message>
   <message key="plugins.generic.converter.select.file">Select file to convert:</message>
   <message key="plugins.generic.converter.converting">Converting document...</message>
+  <message key="plugins.generic.converter.sendMail.email">Write email account</message>
+  <message key="plugins.generic.converter.sendMail">Send Mail...</message>
   <message key="plugins.generic.converter.downloadzip">Download ZIP HTML</message>
   <message key="plugins.generic.converter.downloadzipxml">Download ZIP XML</message>
+  <message key="plugins.generic.converter.downloadzippdf">Download  ZIP PDF</message>
+  <message key="plugins.generic.converter.downloadzipepub">Download  ZIP ePub</message>
+  <message key="plugins.generic.converter.sendzip">Send ZIP</message>	
   <message key="plugins.generic.converter.settings">Settings</message>
   <message key="plugins.generic.converter.settings.userClientToolTip">Value provided by eScire</message>
   <message key="plugins.generic.converter.settings.userPassToolTip">Value provided by eScire</message>
@@ -59,4 +66,8 @@
   <message key="plugins.generic.converter.fileversion.copyeditFile">Edition (Initial correction)</message>
   <message key="plugins.generic.converter.fileversion.submissionFile">Original file</message>
   <message key="plugins.generic.converter.fileversion.initialCopyeditFile">Edition (final file)</message>
+
+  <message key="plugins.generic.converter.fileversion.download.success.zip">Download ZIP</message>
+  <message key="plugins.generic.converter.fileversion.download.success.tip"><p>You can also download all files ZIP</p></message>
+  <message key="plugins.generic.converter.fileversion.download.success.view">Preview</message>
 </locale>

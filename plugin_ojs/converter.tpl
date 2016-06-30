@@ -16,9 +16,16 @@
 	</div>
 	
 	<div id="copyedit">
-		<div>
+		<div style="margin-top:5px;">
 			<div class="inline">
 				<input id="btnConvert" 		type="button" value="{translate key="plugins.generic.converter.convert"}" class="button defaultButton" />
+			</div>
+			<div class="inline">
+				{if !empty($zipFileHTML)}
+					<div class="inline">
+						<input id="btnSendZipHTML" type="image" name="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABrklEQVRIS+2VT07CYBDF37SfiUQTcaOpG/EEslRggTsjNeEI9QTiCcATWE5gj0AiGHe4wD9LvAFuJLoBEo0mlo6ZYv1DwAqEhYldtvN9v5n33qSEKT805fvxDwhV+EOih51E3CU6JqJ46KkfCpi5rpj3lk4v61L2AWhmkg2AoiDYkwDAyAHcMioXa98BZooZXnGlfJmbBHBnJmyCtm+Ua37znxO8AwhaG67rGGfXjVFAze2NGJSyGF50KADAoVGuFfwumKLodgthIP9iXc8zcUemb5qpAoD8wAkCgHR+v7uZ9TzdAeFoVj0WF0v19teJWtl49MWd3wfjQNO61vLJVUm+/xogxX6yNHIAWiXAFpC8l4sZvpm3ymMrSMyYAK0qFxFoHcw9X4hiDL4RsPK8rbEAve61KgFF8aVpptJgdt4BllGunftyMHI6e+kA8iuJxDhWeql//EGpCmSMqKe0+BQKmFWP9vPrnBWZeXL6jR0WWzE8OPPizsseDU/RODsQgINdGAzIJBtMtCBpGWXB+mslXcTcMSoXsW+bHGjpp2WCR9L11bv/H06omH9fojcwUwEoak9E/AAAAABJRU5ErkJggg==" width="24" height="24"/>
+					</div>	
+				{/if}
 			</div>
 			<div class="inline">
 				{if !empty($zipFileHTML)}
@@ -26,13 +33,54 @@
 				{/if}
 			</div>
 		</div>	
-		<div>
+		<div style="margin-top:5px;">
 			<div class="inline">
 				<input id="btnConvertXML" type="button" value="{translate key="plugins.generic.converter.convertXML"}" class="button defaultButton" />
 			</div>
 			<div class="inline">
 				{if !empty($zipFileXML)}
+					<div class="inline">
+						<input id="btnSendZipXML" type="image" name="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABrklEQVRIS+2VT07CYBDF37SfiUQTcaOpG/EEslRggTsjNeEI9QTiCcATWE5gj0AiGHe4wD9LvAFuJLoBEo0mlo6ZYv1DwAqEhYldtvN9v5n33qSEKT805fvxDwhV+EOih51E3CU6JqJ46KkfCpi5rpj3lk4v61L2AWhmkg2AoiDYkwDAyAHcMioXa98BZooZXnGlfJmbBHBnJmyCtm+Ua37znxO8AwhaG67rGGfXjVFAze2NGJSyGF50KADAoVGuFfwumKLodgthIP9iXc8zcUemb5qpAoD8wAkCgHR+v7uZ9TzdAeFoVj0WF0v19teJWtl49MWd3wfjQNO61vLJVUm+/xogxX6yNHIAWiXAFpC8l4sZvpm3ymMrSMyYAK0qFxFoHcw9X4hiDL4RsPK8rbEAve61KgFF8aVpptJgdt4BllGunftyMHI6e+kA8iuJxDhWeql//EGpCmSMqKe0+BQKmFWP9vPrnBWZeXL6jR0WWzE8OPPizsseDU/RODsQgINdGAzIJBtMtCBpGWXB+mslXcTcMSoXsW+bHGjpp2WCR9L11bv/H06omH9fojcwUwEoak9E/AAAAABJRU5ErkJggg==" width="24" height="24"/>
+					</div>	
+				{/if}
+			</div>
+			<div class="inline">
+				{if !empty($zipFileXML)}
 					<input id="btnDownloadZipXML" type="button" value="{translate key="plugins.generic.converter.downloadzipxml"}" class="button defaultButton" data-tool="{$archivoToolTipXML}" /><span class="fieldtip">{$archivoToolTipXML}</span>
+				{/if}
+			</div>
+		</div>
+		<div style="margin-top:5px;">
+			<div class="inline">
+				<input id="btnConvertPDF" type="button" value="{translate key="plugins.generic.converter.convertPDF"}" class="button defaultButton" />
+			</div>
+			<div class="inline">
+				{if !empty($zipFilePDF)}
+					<div class="inline">
+						<input id="btnSendZipPDF" type="image" name="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABrklEQVRIS+2VT07CYBDF37SfiUQTcaOpG/EEslRggTsjNeEI9QTiCcATWE5gj0AiGHe4wD9LvAFuJLoBEo0mlo6ZYv1DwAqEhYldtvN9v5n33qSEKT805fvxDwhV+EOih51E3CU6JqJ46KkfCpi5rpj3lk4v61L2AWhmkg2AoiDYkwDAyAHcMioXa98BZooZXnGlfJmbBHBnJmyCtm+Ua37znxO8AwhaG67rGGfXjVFAze2NGJSyGF50KADAoVGuFfwumKLodgthIP9iXc8zcUemb5qpAoD8wAkCgHR+v7uZ9TzdAeFoVj0WF0v19teJWtl49MWd3wfjQNO61vLJVUm+/xogxX6yNHIAWiXAFpC8l4sZvpm3ymMrSMyYAK0qFxFoHcw9X4hiDL4RsPK8rbEAve61KgFF8aVpptJgdt4BllGunftyMHI6e+kA8iuJxDhWeql//EGpCmSMqKe0+BQKmFWP9vPrnBWZeXL6jR0WWzE8OPPizsseDU/RODsQgINdGAzIJBtMtCBpGWXB+mslXcTcMSoXsW+bHGjpp2WCR9L11bv/H06omH9fojcwUwEoak9E/AAAAABJRU5ErkJggg==" width="24" height="24"/>
+					</div>	
+				{/if}
+			</div>
+			<div class="inline">
+				{if !empty($zipFilePDF)}
+					<input id="btnDownloadZipPDF" type="button" value="{translate key="plugins.generic.converter.downloadzippdf"}" class="button defaultButton" data-tool="{$archivoToolTipPDF}" /><span class="fieldtip">{$archivoToolTipPDF}</span>
+				{/if}
+			</div>
+		</div>
+		<div style="margin-top:5px;">
+			<div class="inline">
+				<input id="btnConvertEPUB" type="button" value="{translate key="plugins.generic.converter.convertEPUB"}" class="button defaultButton" />
+			</div>
+			<div class="inline">
+				{if !empty($zipFileEPUB)}
+					<div class="inline">
+						<input id="btnSendZipEPUB" type="image" name="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABrklEQVRIS+2VT07CYBDF37SfiUQTcaOpG/EEslRggTsjNeEI9QTiCcATWE5gj0AiGHe4wD9LvAFuJLoBEo0mlo6ZYv1DwAqEhYldtvN9v5n33qSEKT805fvxDwhV+EOih51E3CU6JqJ46KkfCpi5rpj3lk4v61L2AWhmkg2AoiDYkwDAyAHcMioXa98BZooZXnGlfJmbBHBnJmyCtm+Ua37znxO8AwhaG67rGGfXjVFAze2NGJSyGF50KADAoVGuFfwumKLodgthIP9iXc8zcUemb5qpAoD8wAkCgHR+v7uZ9TzdAeFoVj0WF0v19teJWtl49MWd3wfjQNO61vLJVUm+/xogxX6yNHIAWiXAFpC8l4sZvpm3ymMrSMyYAK0qFxFoHcw9X4hiDL4RsPK8rbEAve61KgFF8aVpptJgdt4BllGunftyMHI6e+kA8iuJxDhWeql//EGpCmSMqKe0+BQKmFWP9vPrnBWZeXL6jR0WWzE8OPPizsseDU/RODsQgINdGAzIJBtMtCBpGWXB+mslXcTcMSoXsW+bHGjpp2WCR9L11bv/H06omH9fojcwUwEoak9E/AAAAABJRU5ErkJggg==" width="24" height="24"/>
+					</div>	
+				{/if}
+			</div>
+			<div class="inline">
+				{if !empty($zipFileEPUB)}
+					<input id="btnDownloadZipEPUB" type="button" value="{translate key="plugins.generic.converter.downloadzipepub"}" class="button defaultButton" data-tool="{$archivoToolTipEPUB}" /><span class="fieldtip">{$archivoToolTipEPUB}</span>
 				{/if}
 			</div>
 		</div>
@@ -55,10 +103,34 @@
 	</div>
 </div>
 
+<div id="dialogSendMail" title="{translate key="plugins.generic.converter.sendMail"}">
+	<div id="dialogContentSendMail" style="display:none;">
+		{translate key="plugins.generic.converter.sendMail"} <b id="typeLabel"></b> <br/>
+		{translate key="plugins.generic.converter.sendMail.email"} <br/>
+		<div>
+			<form id="formMail">
+				<div class="inline">
+					<input type="email" name="emailS" id="emailS" size="35" required="required"/>
+				</div>
+				<div class="inline">
+					<input type="button" id="btnSendEmail" value="{translate key="plugins.generic.converter.sendzip"}" class="button defaultButton"/>
+				</div>
+			</form>	
+		</div>
+		<span id="spanMessages" class="messages"></span>
+		<span id="spanTypeSend" class="hidden"></span>
+	</div>
+</div>
+
+
 
 {literal}
 <style type="text/css">
 
+#spanMessages{
+	color: #ce4844;
+}
+	
 input.defaultButton {
 	  -webkit-border-radius: 5;
 	  -moz-border-radius: 5;
@@ -68,7 +140,7 @@ input.defaultButton {
 }
 
 .inline{
-	 display:inline-block;
+	display:inline-block;
 }
 
 .settingsConverter{
@@ -114,7 +186,7 @@ input.defaultButton {
     font-size: 1em;
 }
 
-#dialogContent{
+#dialogContent, #dialogContentSendMail{
 	margin: 10px;
 }
 
@@ -218,6 +290,20 @@ $(function(){
     });
 });
 
+$(function(){
+    $('#btnDownloadZipPDF').click(function(e){
+        e.preventDefault();
+        window.location.href = "{/literal}{$zipFilePDF}{literal}";
+    });
+});
+
+$(function(){
+    $('#btnDownloadZipEPUB').click(function(e){
+        e.preventDefault();
+        window.location.href = "{/literal}{$zipFileEPUB}{literal}";
+    });
+});
+
 function startConvertion(tipo){
 	var e = document.getElementById("archivosLista");
 	var fileSelected = e.options[e.selectedIndex].value;
@@ -236,6 +322,21 @@ function startConvertion(tipo){
     });
 }
 
+function sendMail(mail, tipo){
+	
+    $.ajax({
+        url: "{/literal}{$principalUrl}{literal}/gateway/plugin/ConverterGatewayPlugin/sendMail/",
+		type: "POST",
+		data: "sendType="+tipo+"&toEmail="+mail,
+        success: function(data){
+
+            getStatus();
+        }
+    });
+}
+
+	
+	
 function getStatus(){
     $.ajax({
         dataType: 'json',
@@ -250,7 +351,7 @@ function getStatus(){
                 }else{
             
                     var success = '<p>Puedes descargar támbien el ZIP con todos los archivos</p>' +
-                                '<p><a id="conv-desc" href="' + data.zipDownloadURL + '" class="button">Descargar</a></p>' + 
+                                '<p><a id="conv-desc" href="' + data.zipDownloadURL + '" class="button">Descargar en ZIP</a></p>' + 
                                 '<a id="conv-prev" href="' + data.proofGalleyUrl + '" target="_blank" class="button">Vista Previa</a>';
                     $("#success").html(success);
                     converted = true;
@@ -308,16 +409,158 @@ $(function() {
 			}
 		});
 	});
-
-
-
-
-/*
-	$(window).bind('beforeunload',function(){
+	$("#btnSendZipXML").click(function() {
+		$( "#dialogSendMail" ).dialog({
+			width: 500,
+			height:130,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContentSendMail").show();
+				$('#spanTypeSend').text('xml');
+				$('#typeLabel').text('XML');
+            },
+			beforeClose: function( event, ui ) {
+				$('#spanTypeSend').text('');
+                 location.reload();
+			}
+		});
 	});
-*/
+	$("#btnSendZipHTML").click(function() {
+		$( "#dialogSendMail" ).dialog({
+			width: 500,
+			height:130,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContentSendMail").show();
+				$('#spanTypeSend').text('html');
+				$('#typeLabel').text('HTML');
+            },
+			beforeClose: function( event, ui ) {
+				$('#spanTypeSend').text('');
+                 location.reload();
+			}
+		});
+	});
+	$("#btnSendZipPDF").click(function() {
+		$( "#dialogSendMail" ).dialog({
+			width: 500,
+			height:130,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContentSendMail").show();
+				$('#spanTypeSend').text('pdf');
+				$('#typeLabel').text('PDF');
+            },
+			beforeClose: function( event, ui ) {
+				$('#spanTypeSend').text('');
+                 location.reload();
+			}
+		});
+	});
+	$("#btnSendZipEPUB").click(function() {
+		$( "#dialogSendMail" ).dialog({
+			width: 500,
+			height:130,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContentSendMail").show();
+				$('#spanTypeSend').text('epub');
+				$('#typeLabel').text('EPUB');
+            },
+			beforeClose: function( event, ui ) {
+				$('#spanTypeSend').text('');
+                 location.reload();
+			}
+		});
+	});
+	$("#btnConvertPDF").click(function() {
+		$( "#dialog" ).dialog({
+			width: 500,
+			height:280,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContent").show();
+                startConvertion('pdf');
+            },
+			beforeClose: function( event, ui ) {
+				if(converted){
+                    location.reload();
+                }
+                else{
+                    alert("{/literal}{translate key="plugins.generic.converter.statusMessage"}{literal}");
+				    return false;
+                }
+			}
+		});
+	});
+	$("#btnConvertEPUB").click(function() {
+		$( "#dialog" ).dialog({
+			width: 500,
+			height:280,
+			modal: true,
+			resizable: false,
+			dialogClass: 'dialog-converter',
+            open: function( event, ui ) {
+                $("#dialogContent").show();
+                startConvertion('epub');
+            },
+			beforeClose: function( event, ui ) {
+				if(converted){
+                    location.reload();
+                }
+                else{
+                    alert("{/literal}{translate key="plugins.generic.converter.statusMessage"}{literal}");
+				    return false;
+                }
+			}
+		});
+	});
+
+
 
 });
+
+$('#emailS').blur(function(){
+    var $email = $('form input[name="emailS');
+	if( ValidateEmail($email.val()) ){
+		$('#spanMessages').text('');
+	}else{
+		$('#spanMessages').text('Incorrect Mail');
+	}
+});	
+
+$('#btnSendEmail').click(function(){
+    var $email = $('form input[name="emailS'); //change form to id or containment selector
+	if( ValidateEmail($email.val()) ){
+		var conType =  $('#spanTypeSend').text();
+		$('#spanMessages').text('');
+		sendMail($email.val(),conType);
+		$( ".ui-icon.ui-icon-closethick" ).trigger( "click" );
+	}else{
+		$('#spanMessages').text('Incorrect Mail');
+	}
+});	
+
+	
+function ValidateEmail(mail)   
+{  
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))  
+  {  
+    return (true)  
+  }  
+  return (false)  
+}  
+
 </script>
  {/literal}
 

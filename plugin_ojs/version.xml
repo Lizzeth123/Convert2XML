@@ -4,15 +4,15 @@
 <!--
   * plugins/generic/converver/version.xml
   *
-  * Copyright (c) 2016 Convertidor XML elaborado por eScire con revisiones de SciELO México
+  * Copyright (c) 2015 Jose Manuel Campechano
   *
   * Plugin version information.
   -->
 <version>
 	<application>converter</application>
 	<type>plugins.generic</type>
-	<release>1.0.0.0</release>
-	<date>2015-01-27</date>
+	<release>2.0.0.0</release>
+	<date>2016-06-30</date>
 	<lazy-load>1</lazy-load>
 	<class>ConverterPlugin</class>
 </version>

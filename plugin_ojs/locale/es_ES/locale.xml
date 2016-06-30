@@ -24,10 +24,17 @@
   <message key="plugins.generic.converter.register2">y obten conversiones ilimitadas por 30 días</message>
   <message key="plugins.generic.converter.convert">Convertir a HTML</message>
   <message key="plugins.generic.converter.convertXML">Convertir a XML</message>
+  <message key="plugins.generic.converter.convertPDF">Convertir a PDF</message>
+  <message key="plugins.generic.converter.convertEPUB">Convertir a ePub</message>
   <message key="plugins.generic.converter.select.file">Selecciona archivo a convertir:</message>
+  <message key="plugins.generic.converter.sendMail.email">Escriba cuenta de correo electrónico:</message>
+  <message key="plugins.generic.converter.sendMail">Envíar por correo electrónico...</message>	
   <message key="plugins.generic.converter.converting">Convirtiendo documento</message>
   <message key="plugins.generic.converter.downloadzip">Descargar ZIP HTML</message>
   <message key="plugins.generic.converter.downloadzipxml">Descargar ZIP XML</message>
+  <message key="plugins.generic.converter.downloadzippdf">Descargar ZIP PDF</message>
+  <message key="plugins.generic.converter.downloadzipepub">Descargar ZIP ePub</message>
+  <message key="plugins.generic.converter.sendzip">Envíar ZIP</message>
   <message key="plugins.generic.converter.settings">Configuración</message>
   <message key="plugins.generic.converter.settings.userClientToolTip">Usuario proporcionado por eScire</message>
   <message key="plugins.generic.converter.settings.userPassToolTip">Su contraseña fue envíada en su registro</message>
@@ -59,4 +66,9 @@
   <message key="plugins.generic.converter.fileversion.copyeditFile">Edición (Corrección inicial)</message>
   <message key="plugins.generic.converter.fileversion.submissionFile">Resumen (Archivo original)</message>
   <message key="plugins.generic.converter.fileversion.initialCopyeditFile">Edición (Archivo inicial)</message>
+
+  <message key="plugins.generic.converter.fileversion.download.success.zip">Descargar en ZIP</message>
+  <message key="plugins.generic.converter.fileversion.download.success.tip"><p>Puedes descargar támbien el ZIP con todos los archivos</p></message>
+  <message key="plugins.generic.converter.fileversion.download.success.view">Vista Previa 1</message>
+
 </locale>
