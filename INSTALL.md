@@ -36,6 +36,12 @@
 it should be placed just before the line:<br />
 {include file="sectionEditor/submission/layout.tpl"}
 
+### XML Preview
+1. Log into your OJS installation as manager.
+2. Go to "System modules".
+3. Within generic modules, enable XML Gallery Plugin
+3. Go to the module configuration and upload the XSL File
+
 ## Español
 \([View in english](#english)\)
 
@@ -69,3 +75,9 @@ it should be placed just before the line:<br />
 {call_hook name="Converter"}<br />
 deberá colocarla justo antes la línea:<br />
 {include file="sectionEditor/submission/layout.tpl"}
+
+### XML Preview
+1. Ingresa a tu instalación de OJS como gestor.
+2. Entra a "Módulos del Sistema".
+3. Dentro de módulos genéricos, habilita XML Gallery Plugin
+3. Ve a la configuración del módulo y sube el archivo XSL
