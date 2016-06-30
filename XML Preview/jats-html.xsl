@@ -30,25 +30,17 @@
 				</h3>  
 			</div>
 			<div id="derecha">
-				<h3>
-					<a id="descargarePub" class="link" style="background: #FFF;">
-						<img class="icon icons8-View-File" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAETElEQVRoQ9WaTW7bRhTH/4+WABkOUHtTgNpYOUGUXWsJqLwrIhVWTlDlBJVPEPsGyQmsnqAKQAfdWQZkI7uoJ4hWJtqNHcBCA5jiK96II9MMKVGWOGpmZZHD4fvNe/O+aEJouI1qDcBZ+NqyfzPzYDM/2t/pDm6WXSvuecoaQNbPEiIJ4Nx2+qKNpYbbqLJeICsIIwAM/otAz7KAMAJQyN3u/Ott9bKAMAJgO326bpa3s4AwBiBnIQsIowBZQBgHWDXEWgBWCbE2gFVBrBVgFRBrB1gWwggAgKN5OQkzbxNRe9HcyRTAPPnj7h/bTn8ueNYAiyeEzC0Q/Qpg/QCP2Xa3UZVdf71SALdR7UlarwXa8P3DMVCGZclO6dGznf7xPy/2ynLPfn/ZkRvy27PQKjqX7avG3huC9UzZOXBDnndo//lhGKlJsgGI1gfBTkHb6VW90gXQI6IBgJq+HlR5R/K8bIRe5+9ffmyOfatVPL1o/l8A2kS0LRBpANwXe2LrNfv0opU9QL16A8JH/SLb6e8rDTDvwrI68P0SA+0c86uxZQlEogaU9TCXQFTa8P3n37+/FI1NR2ZnIMGExMv04PtD+H5P7DkwmbkmNDkb1Ck6F+V1AkzPgBZCATC3tGkoW2eqySEOnwGpDb7cbQ3s04tSGEDm+7zxB4B92+mLOc4cqeKAW68MQXQSWulczER+xwUbOdAEXINoyOCX5I2bgXZEoDMVdYEmmI+1t5onaNL9dACTftH98Lyp64u6QT1JuVPL2g7vor4WgM/d3TRQqQDSLLToHPfnH0rI5SSOyOZMN0g6F8odj8dvkzYn/C7jAKouvtt6rRO3meDMnUJ+dDirq2cUIBD+jIjKYHxm8js5H52wKw000wKjDcJ3ohFxz1F3q8GNAYSFl0bXZm5Um7WzwfwOER2AeVjIj57HzTcGEORBv4nwUd8/y4yURyM6YKBbdPovo3ONAARm8UnMppC/LS3SqdbxAkS7cbHBDECQIjP8txLQFvZYkjdZ1gmYf4/mTqYAxOf/FJf7pIFRWvCeXEsKXnT6O8bdqG6zS480jcBxc4JsYDe6hikNqGJoKYBJUfWVFr8ZgKt65aPEj7Vo4KpRGci3AXje0zTpQdSE9BkQL2af9qXemA4jGtAxIG2hHgVQ1ZtlnTDzu2gJagRAxwHxIpu526eLxAGBceuVT1LBrS0OBEJ0pN+TFFGTvJNbr5yASOrm2A+PRjQgwj34OgN0N3O3r+ZpIiQ8kmKIMQCBUAUNUVelBcxSFB0V8qN3YZAgdThQ/dSJ2aiR9IXTKMBUE3dbkyzzXjopWYdBgzdc5J9v+H5biv+kL5zGAbTMuvgHqCl5/z0MPjNYGmRvdDk66+NgLIBq+wEP+jWPTQEiz8lBjO04i3klFS1fnaHQ/18kaWBF8j5cJs6PL/KiOE08Orla5MWrnBuGkMD4zQFoc/riPWmLOf4HoikC2wGFKj4AAAAASUVORK5CYII=" width="48" height="48"/>
-					</a>
-				</h3>  
+				<h3></h3>  
 			</div>
 		</div>
 		<script type="text/javascript">
 			window.onload = function() {
 				var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
-				/* URL del convertidor a ePUB */
-				var epub = "/toEpub/convertir.php?url=" + newURL;
 				newURL = newURL.replace("view", "download");
 				if( document.getElementById("descargarXML") ){
 					document.getElementById("descargarXML").setAttribute("href", newURL);
 				}
-				if( document.getElementById("descargarePub") ){
-					document.getElementById("descargarePub").setAttribute("href", epub);
-				}
+				
 			};
 		</script>  
         <div class="panel panel-default" id="tablaContenidos">
