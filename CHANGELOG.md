@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - XML Preview, a XSL file that will create .html. Based in JATSPreviewStylesheets
 - ZIP sending email
 - pt_BR translations from @amatsumiro.
+
 ### Fixed - XML Convertion
 - Fig Count
 - Volume from OJS
