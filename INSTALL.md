@@ -19,8 +19,9 @@
 
 1. Download all files inside folder "webservice".
 2. Create a deployment package on the source computer by using Visual Studio 2013.
-3. In IIS, create a new entry in the file "config\applicationhost.config" in "sites".
-4. Start IIS.
+3. EPUB convertion, buy a license of Spire.Doc for .NET and add the reference. 
+4. In IIS, create a new entry in the file "config\applicationhost.config" in "sites".
+5. Start IIS.
 
 ### Plugin
 
@@ -59,8 +60,9 @@ it should be placed just before the line:<br />
 
 1. Descargar los archivos de la carpeta "webservice".
 2. Crear un paquete de implementación en el equipo de origen utilizando Visual Studio 2013.
-3. En IIS, crear una nueva entrada en el archivo "config\applicationhost.config" dentro de "sites".
-4. Iniciar IIS.
+3. Para la conversión a EPUB, aquirir licencia de Spire.Doc for .NET y agregar la referencia al proyecto.
+4. En IIS, crear una nueva entrada en el archivo "config\applicationhost.config" dentro de "sites".
+5. Iniciar IIS.
 
 ### Plugin
 
