@@ -166,7 +166,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$toEmail = $_POST['toEmail'];
 			
 		$session =& 				Request::getSession();
-	    	$templateMgr = 				&TemplateManager::getManager();
+	    $templateMgr = 				&TemplateManager::getManager();
 		$currentJournal 		=& 	$templateMgr->get_template_vars('currentJournal');
 		$baseUrl 				=&	$templateMgr->get_template_vars('baseUrl');
 		$folder 				= 	$baseUrl . '/plugins/generic/converter/archivos/';
@@ -234,9 +234,9 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		import('classes.file.ArticleFileManager');
 		import('lib.pkp.classes.file.FileManager');
 
-        	$session =& 				Request::getSession();
-	    	$templateMgr = 				&TemplateManager::getManager();
-	    	$this->submissionId = 		$session->getSessionVar('converter_submissionId');
+        $session =& 				Request::getSession();
+	    $templateMgr = 				&TemplateManager::getManager();
+	    $this->submissionId = 		$session->getSessionVar('converter_submissionId');
 		$articleFileManager = new 	ArticleFileManager($this->submissionId);
 		$fileManager = new 			FileManager();
 
@@ -491,13 +491,15 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$templateMgr2 = 	&TemplateManager::getManager();
 		$currentJournal2 =&	$templateMgr2->get_template_vars('currentJournal');
 		
+		
 		$revistaId =		$currentJournal2->getJournalId(); 
 		$revistaTitulo =	$currentJournal2->getJournalTitle();
+		
 
 		$onlineIssn =		$currentJournal2->getSetting('onlineIssn');
 		$printIssn = 		$currentJournal2->getSetting('printIssn');
 		$abbreviation =		$currentJournal2->getSetting('abbreviation');
-
+		
 		$publisher =		$currentJournal2->getSetting('publisherInstitution');
 		
 		$articleDao = 		new	ArticleDAO();
@@ -507,6 +509,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$issue =& 			$issueDao->getIssueByArticleId($this->submissionId, $currentJournal2->getJournalId()); 
 		
 		
+		
 		$abbreviation2 = '';
 		foreach($abbreviation as $uno=>$dos)
 		{
@@ -514,21 +517,18 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		}
 		
 		$issue2 = 			$templateMgr2->get_template_vars('issue');
-
+		
 		
         	$session =& Request::getSession();
         	$actualError = $session->getSessionVar('actualError');
-		
         
 		$urls= $this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName . "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato
 			."&date=".urlencode($article->getDateSubmitted())
 			."&volume=".urlencode($issue->getVolume())
 			."&year=".urlencode($issue->getYear())
 			."&issue=".urlencode($issue->getNumber())
-			."&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn)
+			."&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssn)
 			."&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
-
-		$this->debug_to_console($urls);
 
 		$ch=curl_init();
 		curl_setopt($ch, CURLOPT_URL, $urls);
