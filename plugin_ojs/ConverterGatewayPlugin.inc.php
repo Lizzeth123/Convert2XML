@@ -522,13 +522,30 @@ class ConverterGatewayPlugin extends GatewayPlugin{
         	$session =& Request::getSession();
         	$actualError = $session->getSessionVar('actualError');
         
-		$urls= $this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName . "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato
-			."&date=".urlencode($article->getDateSubmitted())
-			."&volume=".urlencode($issue->getVolume())
-			."&year=".urlencode($issue->getYear())
-			."&issue=".urlencode($issue->getNumber())
-			."&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssn)
-			."&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
+		$urls= $this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName; 
+                $urls.=  "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato;
+    
+    
+	        if( $issue === NULL ){
+		      $urls.=  "&date=0&volume=0&year=0&issue=0";
+	        }else{
+	        	
+		  if($article->getDateSubmitted() === NULL) {
+		  $urls.=  "&date=0" ;    }else{      $urls.=  "&date=".urlencode($article->getDateSubmitted()) ;    }
+	  
+		  if($issue->getVolume() === NULL) {
+		  $urls.=  "&volume=0" ;    }else{      $urls.=  "&volume=".urlencode($issue->getVolume());    }  
+	  
+		  if($issue->getYear() === NULL) {
+		  $urls.=  "&year=0" ;    }else{     	$urls.=  "&year=".urlencode($issue->getYear());    }    
+	
+		  if($issue->getNumber() === NULL) {
+		  $urls.=  "&issue=0" ;    }else{     	$urls.=  "&issue=".urlencode($issue->getNumber()) ;    }    
+	        }
+	
+		
+	$urls.=  "&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn);
+	$urls.=  "&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
 
 		$ch=curl_init();
 		curl_setopt($ch, CURLOPT_URL, $urls);
