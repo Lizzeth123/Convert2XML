@@ -543,6 +543,15 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		  $urls.=  "&issue=0" ;    }else{     	$urls.=  "&issue=".urlencode($issue->getNumber()) ;    }    
 	        }
 	
+	$articleDao2 =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $articleDao PublishedArticleDAO */
+	$article2 =& $articleDao2->getPublishedArticleByArticleId($this->submissionId, null, true);
+	if ($article){
+		if( $article2->getPages() === NULL ){
+			; //debe envíar error
+		}else{
+			$urls.=  "&page=".$article2->getPages();
+		}
+	}
 		
 	$urls.=  "&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn);
 	$urls.=  "&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
