@@ -39,6 +39,7 @@
   <message key="plugins.generic.converter.settings.userClientToolTip">Value provided by eScire</message>
   <message key="plugins.generic.converter.settings.userPassToolTip">Value provided by eScire</message>
   <message key="plugins.generic.converter.settings.wsURLToolTip">Demo: http://converter.escire.mx/convertir.aspx?</message>
+  <message key="plugins.generic.converter.settings.wsDocVersion">Word document version</message>
   <message key="plugins.generic.converter.settings.userName">User</message>
   <message key="plugins.generic.converter.settings.userPassword">Password</message>
   <message key="plugins.generic.converter.settings.userPass">Password</message>
