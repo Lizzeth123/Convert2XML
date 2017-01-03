@@ -1,8 +1,8 @@
-<h3>{translate key="plugins.generic.converter.title"}</h3>
+<h3 style="{$habilitado}">{translate key="plugins.generic.converter.title"}</h3>
 {if $requiredData}
 	<h5 class="settingsConverter">{translate key="plugins.generic.converter.requiredSettings"}</h5>
 {else}
-	<div>
+	<div style="{$habilitado}">
 		<div class="inline">
 			<h4>{translate key="plugins.generic.converter.select.file"}</h4>
 		</div>
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 	
-	<div id="copyedit">
+	<div id="copyedit" style="{$habilitado}">
 		<div style="margin-top:5px;">
 			<div class="inline">
 				<input id="btnConvert" 		type="button" value="{translate key="plugins.generic.converter.convert"}" class="button defaultButton" />

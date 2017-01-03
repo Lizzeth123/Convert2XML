@@ -8,6 +8,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 	var $client = "";
 	var $userPass = "";
 	var $wsURL = "";
+	var $wsDocVersion="";
 	var $fileName = "";
 	var $urlWorkPlugin = "";
 	var $completePath = "";
@@ -98,10 +99,10 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 		/* Get the HTML or whatever is linked in $url. */
 		$response = curl_exec($handle);
-
+		
 		/* Check for 404 (file not found). */
 		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-		if($httpCode == 404) {
+		if($httpCode == 404 || $httpCode == 503) {
 		    return FALSE;
 		}
 		return TRUE;
@@ -166,7 +167,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$toEmail = $_POST['toEmail'];
 			
 		$session =& 				Request::getSession();
-	    $templateMgr = 				&TemplateManager::getManager();
+	    	$templateMgr = 				&TemplateManager::getManager();
 		$currentJournal 		=& 	$templateMgr->get_template_vars('currentJournal');
 		$baseUrl 				=&	$templateMgr->get_template_vars('baseUrl');
 		$folder 				= 	$baseUrl . '/plugins/generic/converter/archivos/';
@@ -234,9 +235,9 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		import('classes.file.ArticleFileManager');
 		import('lib.pkp.classes.file.FileManager');
 
-        $session =& 				Request::getSession();
-	    $templateMgr = 				&TemplateManager::getManager();
-	    $this->submissionId = 		$session->getSessionVar('converter_submissionId');
+        	$session =& 				Request::getSession();
+	    	$templateMgr = 				&TemplateManager::getManager();
+	    	$this->submissionId = 		$session->getSessionVar('converter_submissionId');
 		$articleFileManager = new 	ArticleFileManager($this->submissionId);
 		$fileManager = new 			FileManager();
 
@@ -246,12 +247,11 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$this->client 			= 	$session->getSessionVar('converter_client');
 		$this->userPass 		= 	$session->getSessionVar('converter_pass');
 		$this->wsURL 			= 	$session->getSessionVar('converter_wsURL');
+		$this->wsDocVersion 			= 	$session->getSessionVar('converter_wsDocVersion');
 		$this->urlWorkPlugin 	= 	$baseUrl . '/plugins/generic/converter/archivos/';
 		$this->loginParams 		= 	$session->getSessionVar('converter_loginParams');
 		$this->completePath 	= 	$session->getSessionVar('converter_completePath');
 		$idFiles				= $session->getSessionVar('idFiles');
-
-
 		$this->pathFileCon 		=$this->completePath."archivos/".$fileId1."/"; 
 		$pathFileConCarpeta 	=$this->pathFileCon;
 		$this->pathFileCon 		=$this->pathFileCon.$convertionType."/";
@@ -337,6 +337,8 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		file_put_contents($jsonFile, json_encode($jsonStatus));
 
 		$json = $this->getFileFromServer(  $convertionType );
+		
+		
 		if(property_exists($json, 'estatus')){
 			$jsonStatus = array(
 				"actual" => 0,
@@ -360,27 +362,26 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 		$unzipped = $this->unzip($this->pathFileCon, $json->zipFileName);
 		$convertedFileName = $this->pathFileCon . $json->fileName;
-
+		
 		$this->postGalley = array('from' => 'submissionEditing',
 			'articleId'=> $this->submissionId,
 			'layoutFileType' => 'galley',
 			'layoutFile' =>	'@'.$convertedFileName);
 
+		
 		if($json->convertionType == "html" or $json->convertionType == "xml" or $json->convertionType == "pdf" or $json->convertionType == "epub" ){
 			$jsonStatus = array(
 				"actual" => 1,
 				"total" => 40,
 				"message" => __('plugins.generic.converter.gateway.importingDocument')
 			);
+			
 			file_put_contents($jsonFile, json_encode($jsonStatus));
-
-
 			$galleyUrl = $this->insertGalleyFile();
-
-
+			
 			$imageGalleyUrl = str_replace('editGalley', 'saveGalley', $galleyUrl);
 			$proofGalleyUrl = str_replace('editGalley', 'proofGalley', $galleyUrl);
-
+			
 			$this->insertGalleyImage($this->pathFileCon, $imageGalleyUrl, $json, $proofGalleyUrl, $json->convertionType);
 		}
 
@@ -388,16 +389,19 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 
 	function insertGalleyFile(){
 		$cookie = "";
-
+		
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_POST, true);
-     		curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+     	curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->loginParams);
 		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
 		curl_exec($ch);
 
+
 		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_VERBOSE,true);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -405,8 +409,9 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postGalley);
 		curl_setopt($ch, CURLOPT_URL,$this->uploadUrl);
-		curl_exec($ch);
+		$result =  curl_exec($ch);
 		$chInfo = curl_getinfo($ch);
+
 		curl_close($ch);
 		$galleyUrl = $chInfo["url"];
 
@@ -417,11 +422,11 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 	function insertGalleyImage($imageFolder, $imageGalleyUrl, $json, $proofGalleyUrl, $convertionType="html"){
 		$session =& Request::getSession();
 		$convertionType = $session->getSessionVar('converter_convertionType');
-        	$images = glob($imageFolder."{*.emz,*.jpeg,*.jpg,*.gif,*.png}", GLOB_BRACE);
+        $images = glob($imageFolder."{*.emz,*.jpeg,*.jpg,*.gif,*.png}", GLOB_BRACE);
 		$totalImages = count($images);
 		$jsonFile = $session->getSessionVar('converter_rutaJson');
 		$cnt = 0;
-
+		
 		foreach($images as $image){
 
 		    $imagePost = array('label' => strtoupper($convertionType),
@@ -431,19 +436,19 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		    );
 			
 			$cookie = "";
-		    	$ch = curl_init();
+		    $ch = curl_init();
 			curl_setopt($ch, CURLOPT_POST, true);
-		     	curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
+		    curl_setopt($ch, CURLOPT_URL, $this->loginUrl);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->loginParams);
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-		    	curl_exec($ch);
+		    curl_exec($ch);
 
-		    	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
-		    	curl_setopt($ch, CURLOPT_POSTFIELDS, $imagePost);
-		    	curl_setopt($ch, CURLOPT_URL, $imageGalleyUrl);
-		    	curl_exec($ch);
-		    	curl_close($ch);
+		    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: multipart/form-data;') );
+		    curl_setopt($ch, CURLOPT_POSTFIELDS, $imagePost);
+		    curl_setopt($ch, CURLOPT_URL, $imageGalleyUrl);
+		    curl_exec($ch);
+		    curl_close($ch);
 
 			++$cnt;
 			$jsonStatus = array(
@@ -471,6 +476,7 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 	}
 
 	function unzip($completePath, $zipFile){
+		
 		$zip = new ZipArchive;
 		$path = $completePath.$zipFile;
 		$res = $zip->open($path);
@@ -491,15 +497,13 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$templateMgr2 = 	&TemplateManager::getManager();
 		$currentJournal2 =&	$templateMgr2->get_template_vars('currentJournal');
 		
-		
 		$revistaId =		$currentJournal2->getJournalId(); 
 		$revistaTitulo =	$currentJournal2->getJournalTitle();
-		
 
 		$onlineIssn =		$currentJournal2->getSetting('onlineIssn');
 		$printIssn = 		$currentJournal2->getSetting('printIssn');
 		$abbreviation =		$currentJournal2->getSetting('abbreviation');
-		
+
 		$publisher =		$currentJournal2->getSetting('publisherInstitution');
 		
 		$articleDao = 		new	ArticleDAO();
@@ -509,7 +513,6 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$issue =& 			$issueDao->getIssueByArticleId($this->submissionId, $currentJournal2->getJournalId()); 
 		
 		
-		
 		$abbreviation2 = '';
 		foreach($abbreviation as $uno=>$dos)
 		{
@@ -517,55 +520,68 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		}
 		
 		$issue2 = 			$templateMgr2->get_template_vars('issue');
+
+        $session =& Request::getSession();
+        $actualError = $session->getSessionVar('actualError');
 		
-		
-        	$session =& Request::getSession();
-        	$actualError = $session->getSessionVar('actualError');
         
 		$urls= $this->wsURL."cliente=" . $this->client. "&clave=" . urlencode($this->userPass) . "&archivo=" . $this->fileName; 
-                $urls.=  "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato;
+        $urls.=  "&url=" . $this->urlWorkPlugin . $this->fileId . "/".$formato."/" . "&formato=".$formato."&wordVersion=".$this->wsDocVersion;
     
     
-	        if( $issue === NULL ){
+	    if( $issue === NULL ){
 		      $urls.=  "&date=0&volume=0&year=0&issue=0";
-	        }else{
+	    }else{
 	        	
-		  if($article->getDateSubmitted() === NULL) {
-		  $urls.=  "&date=0" ;    }else{      $urls.=  "&date=".urlencode($article->getDateSubmitted()) ;    }
-	  
-		  if($issue->getVolume() === NULL) {
-		  $urls.=  "&volume=0" ;    }else{      $urls.=  "&volume=".urlencode($issue->getVolume());    }  
-	  
-		  if($issue->getYear() === NULL) {
-		  $urls.=  "&year=0" ;    }else{     	$urls.=  "&year=".urlencode($issue->getYear());    }    
-	
-		  if($issue->getNumber() === NULL) {
-		  $urls.=  "&issue=0" ;    }else{     	$urls.=  "&issue=".urlencode($issue->getNumber()) ;    }    
-	        }
-	
-	$articleDao2 =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $articleDao PublishedArticleDAO */
-	$article2 =& $articleDao2->getPublishedArticleByArticleId($this->submissionId, null, true);
-	if ($article){
-		if( $article2->getPages() === NULL ){
-			; //debe envíar error
-		}else{
-			$urls.=  "&page=".$article2->getPages();
-		}
-	}
+			if($article->getDateSubmitted() === NULL) {
+			  $urls.=  "&date=0" ;    }else{      $urls.=  "&date=".urlencode($article->getDateSubmitted()) ;    }
+		  
+			if($issue->getVolume() === NULL) {
+			  $urls.=  "&volume=0" ;    }else{      $urls.=  "&volume=".urlencode($issue->getVolume());    }  
+		  
+			if($issue->getYear() === NULL) {
+			  $urls.=  "&year=0" ;    }else{     	$urls.=  "&year=".urlencode($issue->getYear());    }    
 		
-	$urls.=  "&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn);
-	$urls.=  "&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
+			if($issue->getNumber() === NULL) {
+			  $urls.=  "&issue=0" ;    }else{     	$urls.=  "&issue=".urlencode($issue->getNumber()) ;    }    
+	    }
+		
+		$articleDao2 =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $articleDao PublishedArticleDAO */
+		$article2 =& $articleDao2->getPublishedArticleByArticleId($this->submissionId, null, true);
+		if ($article){
+				if( $article2->getPages() === NULL ){
+					; //debe envíar error
+				}else{
+					$urls.=  "&page=".$article2->getPages();
+				}
+		}
+		
+		$urls.=  "&publisher=".urlencode($publisher)."&printIssn=".urlencode($printIssn)."&onlineIssn=".urlencode($onlineIssnonlineIssn);
+		$urls.=  "&abbreviation=".urlencode($abbreviation2)."&revistaId=".urlencode($revistaId)."&revistaTitulo=".urlencode($revistaTitulo);
+
 
 		$ch=curl_init();
 		curl_setopt($ch, CURLOPT_URL, $urls);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0); 
-		curl_setopt($ch, CURLOPT_TIMEOUT, 400); //timeout in seconds
-		set_time_limit(0);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 0); //timeout in seconds
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
+		set_time_limit(0); 
 
 		$json=curl_exec($ch);
+		
+		// Check if
+		/*if(curl_errno($ch))
+		{
+			file_put_contents('/home/ojs/public_html/demo248/plugins/generic/converter/errorTimeOut.txt', curl_error($ch) , FILE_APPEND | LOCK_EX);
+			$actualError = '{"status": "error", "actual": "0", "total": "100", "message": "' . __("plugins.generic.converter.error.conection") . '"}';
+			$session->setSessionVar('actualError', $actualError);
+			return false;
+		}
+		*/
+		
 		curl_close($ch);		
-
+	
+		
 		if(empty($json)){
 			$actualError = '{"status": "error", "actual": "0", "total": "100", "message": "' . __("plugins.generic.converter.gateway.convertedFileError") . '"}';
 			$session->setSessionVar('actualError', $actualError);
@@ -581,15 +597,16 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 				exit(0);
 			}
 		}
-
+		
 		$zipFile = file_get_contents(urldecode($json->downloadURL));
+		
 		file_put_contents($this->pathFileCon . $json->zipFileName, $zipFile);
 
 		return $json;
 		
 
 	}
-
+	
 	function showError(){
 		header("HTTP/1.0 500 Internal Server Error");
 		echo "";

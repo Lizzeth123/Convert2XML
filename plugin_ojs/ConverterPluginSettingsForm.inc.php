@@ -26,12 +26,21 @@ class ConverterPluginSettingsForm extends Form {
 		$this->setData('userClient', 	$plugin->getSetting($journalId, 'userClient'));
 		$this->setData('userPass', 		$plugin->getSetting($journalId, 'userPass'));
 		$this->setData('wsURL', 		$plugin->getSetting($journalId, 'wsURL'));
+		$this->setData('wsDocVersion', 		$plugin->getSetting($journalId, 'wsDocVersion'));
+		
+		$this->setData('wsDocVersionValores', array(
+											' ' => '',
+											'2016' => '2016',
+											'2015' => '2015')
+                                );
+		$this->setData('wsDocVersion', $plugin->getSetting($journalId, 'wsDocVersion'));
 	}
 
 	function readInputData() {
 		$this->readUserVars(array('userClient'));
 		$this->readUserVars(array('userPass'));
 		$this->readUserVars(array('wsURL'));
+		$this->readUserVars(array('wsDocVersion'));
 	}
 
 	function execute() {
@@ -40,6 +49,7 @@ class ConverterPluginSettingsForm extends Form {
 		$plugin->updateSetting($journalId, 'userClient', 	$this->getData('userClient'), 'string');
 		$plugin->updateSetting($journalId, 'userPass', 		$this->getData('userPass'), 'string');
 		$plugin->updateSetting($journalId, 'wsURL', 		$this->getData('wsURL'), 'string');
+		$plugin->updateSetting($journalId, 'wsDocVersion', 	$this->getData('wsDocVersion'), 'string');
 	}
 }
 

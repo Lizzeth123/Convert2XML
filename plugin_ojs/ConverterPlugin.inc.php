@@ -27,11 +27,11 @@ class ConverterPLugin extends GenericPlugin{
 
 
 	function getDisplayName(){	
-		return Locale::translate('plugins.generic.converter.displayName');
+		return AppLocale::translate('plugins.generic.converter.displayName');
 	}
 
 	function getDescription(){
-		return Locale::translate('plugins.generic.converter.description');
+		return AppLocale::translate('plugins.generic.converter.description');
 	}
 
 	function setEnabled($enabled) {
@@ -54,7 +54,7 @@ class ConverterPLugin extends GenericPlugin{
 	function getManagementVerbs() {
 		$verbs = array();
 		if ($this->getEnabled()) {
-			$verbs[] = array('settings', Locale::translate('plugins.generic.converter.settings'));
+			$verbs[] = array('settings', AppLocale::translate('plugins.generic.converter.settings'));
 		}
 		return parent::getManagementVerbs($verbs);
 	}
@@ -151,11 +151,11 @@ class ConverterPLugin extends GenericPlugin{
 	   	$templateMgr =		 &TemplateManager::getManager();
 		$journal =& 		 Request::getJournal();
 		$pageVars = 		 $smarty->_tpl_vars;
-		$userName = 		'convertidor';
-		$userPassword = 	'usuario2016_#';
+		$userName = 'convertidor';
+		$userPassword = 'Convertidor2015.#';
 
         	/////Verificar su existe usuario convertidor y si no ... lo crea
-        $roleDao =& DAORegistry::getDAO('RoleDAO');			 
+        	$roleDao =& DAORegistry::getDAO('RoleDAO');			 
 		$userDao =& DAORegistry::getDAO('UserDAO');
 
 		$newUser = new User();
@@ -189,12 +189,25 @@ class ConverterPLugin extends GenericPlugin{
 			}
 		}else{
 			$this->debug_to_console( 'Usuario ya existe' );	
+			
+			$role = $roleDao->getRole($journal->getId() , $userExists->getId(), ROLE_ID_EDITOR );
+			if ($role == null) {
+				$role = new Role();
+				$role->setRoleId(ROLE_ID_EDITOR);
+				$role->setJournalId($journal->getId());
+				$role->setUserId($userExists->getId());
+				$roleDao->insertRole($role);
+				$this->debug_to_console( 'No tiene el rol, se creo' );	
+			}else{
+				$this->debug_to_console( 'El usuario ya tiene el rol' );	
+			}
 		}
 			
 
 				 $ch=curl_init();
                 curl_setopt($ch, CURLOPT_URL, "http://converter.escire.mx/");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                //curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 400); //timeout in seconds
                 set_time_limit(0);
 
@@ -211,6 +224,9 @@ class ConverterPLugin extends GenericPlugin{
 		$journalPath = 		 $currentJournal->getUrl();//domain.com/index.php/journal
 		
 		$wsURL = $this->getSetting($currentJournal->getId(), 'wsURL');
+		$wsDocVersion = $this->getSetting($currentJournal->getId(), 'wsDocVersion');
+		
+		
 		$userPass = $this->getSetting($currentJournal->getId(), 'userPass');
 		$userClient = $this->getSetting($currentJournal->getId(), 'userClient');
 
@@ -235,7 +251,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($initialCopyeditFile){
 			$temp = strtolower($initialCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-				$archivos[$initialCopyeditFile->_data["revision"].','.$initialCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.initialCopyeditFile').' | '. $initialCopyeditFile->_data["fileName"];
+				$archivos[$initialCopyeditFile->_data["revision"].','.$initialCopyeditFile->_data["fileId"]] = AppLocale::translate('plugins.generic.converter.fileversion.initialCopyeditFile').' | '. $initialCopyeditFile->_data["fileName"];
 
 			if( !empty($initialCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $initialCopyeditFile->_data["submissionId"];
@@ -245,7 +261,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($submissionFile){
 			$temp = strtolower($submissionFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$submissionFile->_data["revision"].','.$submissionFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.submissionFile').' | '.$submissionFile->_data["fileName"];
+			$archivos[$submissionFile->_data["revision"].','.$submissionFile->_data["fileId"]] = AppLocale::translate('plugins.generic.converter.fileversion.submissionFile').' | '.$submissionFile->_data["fileName"];
 
 			if( !empty($submissionFile->_data["submissionId"]) )
 				$submissionId = 	 $submissionFile->_data["submissionId"];
@@ -255,7 +271,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($copyeditFile){
 			$temp = strtolower($copyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$copyeditFile->_data["revision"].','.$copyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.copyeditFile').' | '.$copyeditFile->_data["fileName"];
+			$archivos[$copyeditFile->_data["revision"].','.$copyeditFile->_data["fileId"]] = AppLocale::translate('plugins.generic.converter.fileversion.copyeditFile').' | '.$copyeditFile->_data["fileName"];
 
 			if( !empty($copyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $copyeditFile->_data["submissionId"];
@@ -265,7 +281,7 @@ class ConverterPLugin extends GenericPlugin{
 		if($editorAuthorCopyeditFile){
 			$temp = strtolower($editorAuthorCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$editorAuthorCopyeditFile->_data["revision"].','.$editorAuthorCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.editorAuthorCopyeditFile').' | '.$editorAuthorCopyeditFile->_data["fileName"];
+			$archivos[$editorAuthorCopyeditFile->_data["revision"].','.$editorAuthorCopyeditFile->_data["fileId"]] = AppLocale::translate('plugins.generic.converter.fileversion.editorAuthorCopyeditFile').' | '.$editorAuthorCopyeditFile->_data["fileName"];
 
 			if( !empty($editorAuthorCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $editorAuthorCopyeditFile->_data["submissionId"];
@@ -276,7 +292,7 @@ class ConverterPLugin extends GenericPlugin{
         if($finalCopyeditFile){
         	$temp = strtolower($finalCopyeditFile->_data["fileName"]);
 			if( $this->str_ends_with($temp, 'doc') || $this->str_ends_with($temp, 'docx') )
-			$archivos[$finalCopyeditFile->_data["revision"].','.$finalCopyeditFile->_data["fileId"]] = Locale::translate('plugins.generic.converter.fileversion.finalCopyeditFile').' | '.$finalCopyeditFile->_data["fileName"];
+			$archivos[$finalCopyeditFile->_data["revision"].','.$finalCopyeditFile->_data["fileId"]] = AppLocale::translate('plugins.generic.converter.fileversion.finalCopyeditFile').' | '.$finalCopyeditFile->_data["fileName"];
 
 			if( !empty($finalCopyeditFile->_data["submissionId"]) )
 				$submissionId = 	 $finalCopyeditFile->_data["submissionId"];
@@ -285,7 +301,11 @@ class ConverterPLugin extends GenericPlugin{
 		unset($archivos['vacio']);
 
 		
-		if (!empty($archivos)) {
+		if (empty($archivos)) {
+			$templateMgr->assign('habilitado', 'pointer-events: none;opacity: 0.5;');
+		}else{
+			$templateMgr->assign('habilitado', 'pointer-events: auto;opacity: 1;');
+		}
 			
 			$fileName = 		 $finalCopyeditFile->_data["fileName"];
 			$revision = 		 $finalCopyeditFile->_data["revision"];
@@ -302,21 +322,23 @@ class ConverterPLugin extends GenericPlugin{
 			$userAgent = "'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13'";
 
 			$requiredData = false;
-			if(empty($userName) || empty($userPassword) || empty($userClient) || empty($userPass)  || empty($wsURL)	)
+			if(empty($userName) || empty($userPassword) || empty($userClient) || empty($userPass)  || empty($wsURL) || empty($wsDocVersion)	)
 				$requiredData = true;
 
 		    $loginParams = array(
 					'username' => $userName,
 					'password' => $userPassword
 				);
+				
 			$session->setSessionVar('converter_pathFileCon', $pathFileCon);
 		    $session->setSessionVar('converter_client', $this->getSetting($currentJournal->getId(), 'userClient'));
 		    $session->setSessionVar('converter_pass', $this->getSetting($currentJournal->getId(), 'userPass'));
 		    $session->setSessionVar('converter_wsURL', $this->getSetting($currentJournal->getId(), 'wsURL'));
+			$session->setSessionVar('converter_wsDocVersion', $this->getSetting($currentJournal->getId(), 'wsDocVersion'));
 		    $session->setSessionVar('converter_userAgent', $userAgent);
 		    $session->setSessionVar('converter_loginParams', $loginParams);
 		    $session->setSessionVar('converter_completePath', $completePath);
-		    $session->setSessionVar('converter_locale', Locale::getLocale());
+		    $session->setSessionVar('converter_locale', AppLocale::getLocale());
 		    $session->setSessionVar('converter_submissionId', $submissionId);
 
 		    $session->setSessionVar('converter_fileId', $fileId);
@@ -387,7 +409,6 @@ class ConverterPLugin extends GenericPlugin{
 
 		    $templateMgr->display($this->getTemplatePath() . 'converter.tpl');
 		    
-		}
 		return false;
 
 	}

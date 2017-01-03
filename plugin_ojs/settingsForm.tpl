@@ -41,6 +41,14 @@
 																										<span class="fieldtip">{translate key="plugins.generic.converter.settings.wsURLToolTip"}</span>
 		</td>
 	</tr>
+	<tr>
+		<td width="30%" align="right" class="label">{fieldLabel name="wsDocVersion" required="true" key="plugins.generic.converter.settings.wsDocVersion"}</td>
+		<td>
+			<select name="wsDocVersion" id="wsDocVersion" value="wsDocVersion" class="textField">
+				{html_options options=$wsDocVersionValores selected=$wsDocVersion}
+			</select>
+		</td>
+	</tr>
 </table>
 
 <br/>
