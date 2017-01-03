@@ -39,6 +39,7 @@
   <message key="plugins.generic.converter.settings.userClientToolTip">Usuario proporcionado por eScire</message>
   <message key="plugins.generic.converter.settings.userPassToolTip">Su contraseña fue envíada en su registro</message>
   <message key="plugins.generic.converter.settings.wsURLToolTip">Demo: http://converter.escire.mx/convertir.aspx?</message>
+  <message key="plugins.generic.converter.settings.wsDocVersion">Versión de documento Word (marcación)</message>
   <message key="plugins.generic.converter.settings.userName">Usuario</message>
   <message key="plugins.generic.converter.settings.userPass">Contraseña</message>
   <message key="plugins.generic.converter.settings.wsURL">URL del WebService</message>
@@ -52,7 +53,7 @@
   <message key="plugins.generic.converter.settings.description">Convierte documentos en formato word a archivo html</message>
   <message key="plugins.generic.converter.statusMessage">Por favor espere mientras termina el proceso</message>   
   <message key="plugins.generic.converter.error.permission">Por favor verifique permisos de escritura de la carpeta archivos dentro del plugin</message>
-  <message key="plugins.generic.converter.error.conection">Servicio no disponible, intentelo más tarde</message>
+  <message key="plugins.generic.converter.error.conection">Servicio no disponible, inténtelo más tarde</message>
   <message key="plugins.generic.converter.gateway.errorZip">Por favor instale o habilite la extensión de PHP ZIP</message>
   <message key="plugins.generic.converter.gateway.uploadingFile">Subiendo archivo</message>
   <message key="plugins.generic.converter.gateway.displayName">Plugin gateway</message>
