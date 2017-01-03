@@ -32,6 +32,7 @@
 	<message key="plugins.generic.converter.settings.userClientToolTip">Usuario fornecido por eScire</message>
 	<message key="plugins.generic.converter.settings.userPassToolTip">Sua senha foi enviada em seu cadastro</message>
 	<message key="plugins.generic.converter.settings.wsURLToolTip">Demo: http://converter.escire.mx/convertir.aspx?</message>
+	<message key="plugins.generic.converter.settings.wsDocVersion">Versão documento do Word</message>
 	<message key="plugins.generic.converter.settings.userName">Usuario</message>
 	<message key="plugins.generic.converter.settings.userPass">Senha</message>
 	<message key="plugins.generic.converter.settings.wsURL">URL do WebService</message>
