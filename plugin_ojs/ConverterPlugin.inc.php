@@ -152,7 +152,7 @@ class ConverterPLugin extends GenericPlugin{
 		$journal =& 		 Request::getJournal();
 		$pageVars = 		 $smarty->_tpl_vars;
 		$userName = 'convertidor';
-		$userPassword = 'Convertidor2015.#';
+		$userPassword = 'usuario2016_#';
 
         	/////Verificar su existe usuario convertidor y si no ... lo crea
         	$roleDao =& DAORegistry::getDAO('RoleDAO');			 
