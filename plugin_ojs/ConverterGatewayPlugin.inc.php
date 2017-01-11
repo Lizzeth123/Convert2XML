@@ -549,8 +549,8 @@ class ConverterGatewayPlugin extends GatewayPlugin{
 		$articleDao2 =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $articleDao PublishedArticleDAO */
 		$article2 =& $articleDao2->getPublishedArticleByArticleId($this->submissionId, null, true);
 		if ($article){
-				if( $article2->getPages() === NULL ){
-					; //debe envíar error
+				if( !is_object($article2) ){
+					$urls.=  "&page=1-1";
 				}else{
 					$urls.=  "&page=".$article2->getPages();
 				}
